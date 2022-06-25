@@ -10,11 +10,11 @@ var RepositoryError = fmt.Errorf("RepositoryError")
 var TaskNotFoundError = fmt.Errorf("TaskNotFoundError")
 
 func (it *Interactor) ShowTasks() ([]*entity.Task, error) {
-	return it.repository.List()
+	return it.Repository.List()
 }
 
 func (it *Interactor) CreateTask(task *entity.Task) (*entity.Task, error) {
-	newID, err := it.repository.Add(task)
+	newID, err := it.Repository.Add(task)
 	if err != nil {
 		return nil, RepositoryError
 	}
@@ -23,7 +23,7 @@ func (it *Interactor) CreateTask(task *entity.Task) (*entity.Task, error) {
 }
 
 func (it *Interactor) DoneTask(id int) (*entity.Task, error) {
-	task, err := it.repository.Get(id)
+	task, err := it.Repository.Get(id)
 	if err != nil {
 		return nil, RepositoryError
 	}
@@ -33,7 +33,7 @@ func (it *Interactor) DoneTask(id int) (*entity.Task, error) {
 
 	task.Done = true
 
-	err = it.repository.Update(task)
+	err = it.Repository.Update(task)
 	if err != nil {
 		return nil, RepositoryError
 	}

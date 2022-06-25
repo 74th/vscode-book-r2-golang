@@ -5,7 +5,7 @@ import (
 )
 
 type Interactor struct {
-	repository Repository
+	Repository Repository
 }
 
 // Repository タスクリポジトリ
