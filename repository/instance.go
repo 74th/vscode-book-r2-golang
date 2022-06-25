@@ -8,13 +8,13 @@ import (
 )
 
 // repository タスク	リポジトリの実装
-type instance struct {
+type Instance struct {
 	tasks []entity.Task
 }
 
 // New リポジトリの作成
 func New() usecase.Repository {
-	s := new(instance)
+	s := new(Instance)
 	s.tasks = make([]entity.Task, 2, 20)
 	s.tasks[0] = entity.Task{
 		ID:   1,
@@ -30,14 +30,14 @@ func New() usecase.Repository {
 }
 
 // Add タスクの追加
-func (s *instance) Add(task *entity.Task) (int, error) {
+func (s *Instance) Add(task *entity.Task) (int, error) {
 	task.ID = len(s.tasks) + 1
 	s.tasks = append(s.tasks, *task)
 	return task.ID, nil
 }
 
 // List 未完了のタスクの一覧
-func (s *instance) List() ([]*entity.Task, error) {
+func (s *Instance) List() ([]*entity.Task, error) {
 	result := []*entity.Task{}
 	for _, task := range s.tasks {
 		if !task.Done {
@@ -48,7 +48,7 @@ func (s *instance) List() ([]*entity.Task, error) {
 }
 
 // Update タスクを更新にする
-func (s *instance) Update(task *entity.Task) error {
+func (s *Instance) Update(task *entity.Task) error {
 	for i, currentTask := range s.tasks {
 		if currentTask.ID == task.ID {
 			s.tasks[i] = *task
@@ -59,7 +59,7 @@ func (s *instance) Update(task *entity.Task) error {
 }
 
 // Get タスクを取得する
-func (s *instance) Get(id int) (*entity.Task, error) {
+func (s *Instance) Get(id int) (*entity.Task, error) {
 	for i, task := range s.tasks {
 		if task.ID == id {
 			s.tasks[i].Done = true
