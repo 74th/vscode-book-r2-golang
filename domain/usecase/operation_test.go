@@ -5,12 +5,12 @@ import (
 
 	"github.com/74th/vscode-book-r2-golang/domain/entity"
 	"github.com/74th/vscode-book-r2-golang/domain/usecase"
-	"github.com/74th/vscode-book-r2-golang/repository"
+	"github.com/74th/vscode-book-r2-golang/memdb"
 )
 
 func newInteractor() usecase.Interactor {
 	return usecase.Interactor{
-		Repository: repository.New(),
+		Database: memdb.New(),
 	}
 }
 
@@ -31,5 +31,11 @@ func TestTaskWork(t *testing.T) {
 		Text: "task1",
 	}
 
-	it.CreateTask(newTask)
+	newTask, err = it.CreateTask(newTask)
+	if err != nil {
+		t.Error("エラーが返らないこと")
+	}
+	if newTask.ID > 0 {
+		t.Error("エラーが返らないこと")
+	}
 }

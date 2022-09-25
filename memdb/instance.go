@@ -1,19 +1,22 @@
-package repository
+package memdb
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/74th/vscode-book-r2-golang/domain/entity"
-	"github.com/74th/vscode-book-r2-golang/domain/usecase"
+	"github.com/74th/vscode-book-r2-golang/domain/repository"
 )
 
-// repository タスク	リポジトリの実装
+var ErrNotFound = errors.New("Not found")
+
+// タスクデータベースの実装
 type Instance struct {
 	tasks []entity.Task
 }
 
-// New リポジトリの作成
-func New() usecase.Repository {
+// インスタンスの作成
+func New() repository.TaskDatabase {
 	s := new(Instance)
 	s.tasks = make([]entity.Task, 2, 20)
 	s.tasks[0] = entity.Task{
@@ -26,18 +29,19 @@ func New() usecase.Repository {
 		Text: "task2",
 		Done: false,
 	}
+
 	return s
 }
 
-// Add タスクの追加
+// タスクの追加
 func (s *Instance) Add(task *entity.Task) (int, error) {
 	task.ID = len(s.tasks) + 1
 	s.tasks = append(s.tasks, *task)
 	return task.ID, nil
 }
 
-// List 未完了のタスクの一覧
-func (s *Instance) List() ([]*entity.Task, error) {
+// 未完了のタスクの検索
+func (s *Instance) SearchUnfinished() ([]*entity.Task, error) {
 	result := []*entity.Task{}
 	for _, task := range s.tasks {
 		if !task.Done {
@@ -55,7 +59,8 @@ func (s *Instance) Update(task *entity.Task) error {
 			return nil
 		}
 	}
-	return fmt.Errorf("Not found id:%d", task.ID)
+
+	return fmt.Errorf("%w id:%d", ErrNotFound, task.ID)
 }
 
 // Get タスクを取得する

@@ -10,23 +10,23 @@ import (
 
 	"github.com/74th/vscode-book-r2-golang/domain/entity"
 	"github.com/74th/vscode-book-r2-golang/domain/usecase"
-	"github.com/74th/vscode-book-r2-golang/repository"
+	"github.com/74th/vscode-book-r2-golang/memdb"
 )
 
-// Server サーバAPI
+// サーバAPI
 type Server struct {
 	server     http.Server
 	interactor usecase.Interactor
 }
 
-// New サーバAPIのインスタンスを作成する
+// サーバAPIのインスタンスを作成する
 func New(addr string, webroot string) *Server {
 	s := &Server{
 		server: http.Server{
 			Addr: addr,
 		},
 		interactor: usecase.Interactor{
-			Repository: repository.New(),
+			Database: memdb.New(),
 		},
 	}
 
@@ -35,11 +35,13 @@ func New(addr string, webroot string) *Server {
 	return s
 }
 
-// Serve サーバを開始する
-func (s *Server) Serve() {
+// サーバを開始する
+func (s *Server) Serve() error {
 	if err := s.server.ListenAndServe(); err != http.ErrServerClosed {
 		log.Fatalf("could not start server: %s", err.Error())
+		return err
 	}
+	return nil
 }
 
 func (s *Server) setRouter(webroot string) {
@@ -54,7 +56,8 @@ func (s *Server) setRouter(webroot string) {
 	s.server.Handler = router
 }
 
-// list GET /tasks
+// GET /tasks
+// タスク一覧
 func (s *Server) list(c *gin.Context) {
 	tasks, err := s.interactor.ShowTasks()
 	if err != nil {
@@ -66,7 +69,8 @@ func (s *Server) list(c *gin.Context) {
 	c.JSON(http.StatusOK, tasks)
 }
 
-// create POST /tasks
+// POST /tasks
+// タスクの追加
 func (s *Server) create(c *gin.Context) {
 	task := new(entity.Task)
 
@@ -87,7 +91,8 @@ func (s *Server) create(c *gin.Context) {
 	c.JSON(200, task)
 }
 
-// done POST /tasks/:id/done
+// POST /tasks/:id/done
+// タスク完了
 func (s *Server) done(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

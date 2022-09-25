@@ -1,16 +1,16 @@
-package repository_test
+package memdb_test
 
 import (
 	"testing"
 
 	"github.com/74th/vscode-book-r2-golang/domain/entity"
-	"github.com/74th/vscode-book-r2-golang/repository"
+	"github.com/74th/vscode-book-r2-golang/memdb"
 )
 
 func TestNew(t *testing.T) {
-	rep := repository.New()
+	rep := memdb.New()
 
-	tasks, err := rep.List()
+	tasks, err := rep.SearchUnfinished()
 	if err != nil {
 		t.Error("エラーが返らないこと", err)
 		return
@@ -20,7 +20,7 @@ func TestNew(t *testing.T) {
 	}
 }
 func TestListAdd(t *testing.T) {
-	rep := repository.New()
+	rep := memdb.New()
 
 	newID, err := rep.Add(&entity.Task{
 		Text: "new task",
@@ -29,7 +29,7 @@ func TestListAdd(t *testing.T) {
 		t.Errorf("エラーを返さないこと")
 	}
 
-	tasks, err := rep.List()
+	tasks, err := rep.SearchUnfinished()
 	if err != nil {
 		t.Error("エラーが返らないこと", err)
 		return
@@ -66,7 +66,7 @@ func TestListAdd(t *testing.T) {
 }
 
 func TestGetUpdate(t *testing.T) {
-	rep := repository.New()
+	rep := memdb.New()
 
 	task, err := rep.Get(1)
 	if err != nil {

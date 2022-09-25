@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/cmd/server/main.go",
+      "args": [
+        "-webroot=${workspaceFolder}/../vscode-book-r2-typescript/public",
+        "-addr=0.0.0.0:8000"
+      ]
+    }
+  ],
+  "compounds": []
+}

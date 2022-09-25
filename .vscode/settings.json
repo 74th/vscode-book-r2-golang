@@ -1,5 +1,10 @@
 {
-  "yaml.schemas": {
-    "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json": "file:///home/ubuntu/ghq/github.com/74th/vscode-book-r2-golang/openapi.yaml"
+  // golangci-lint を有効にする
+  "go.lintTool": "golangci-lint",
+  // 保存する度にリンターを動かす
+  "go.lintOnSave": "workspace",
+  // デバッグ実行時に作成ファイルを非表示にする
+  "files.exclude": {
+    "**/__debug_bin": true
   }
 }
