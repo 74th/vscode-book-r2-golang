@@ -19,6 +19,7 @@ func TestNew(t *testing.T) {
 		t.Errorf("初期化時点で2つのタスクが格納されていること %d", len(tasks))
 	}
 }
+
 func TestListAdd(t *testing.T) {
 	rep := memdb.New()
 
