@@ -22,7 +22,7 @@ func TestTaskWork(t *testing.T) {
 		t.Error("エラーが返らないこと")
 		return
 	}
-	if len(tasks) > 0 {
+	if len(tasks) == 0 {
 		t.Error("初期状態のリポジトリからはからのタスクが引けること")
 		return
 	}
@@ -35,7 +35,7 @@ func TestTaskWork(t *testing.T) {
 	if err != nil {
 		t.Error("エラーが返らないこと")
 	}
-	if newTask.ID > 0 {
-		t.Error("エラーが返らないこと")
+	if newTask.ID == 0 {
+		t.Error("タスクIDが割り振られること")
 	}
 }
