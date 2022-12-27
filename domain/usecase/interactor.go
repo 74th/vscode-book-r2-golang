@@ -1,6 +1,8 @@
-package repository
+package usecase
 
-import "github.com/74th/vscode-book-r2-golang/domain/entity"
+import (
+	"github.com/74th/vscode-book-r2-golang/domain/entity"
+)
 
 // タスクデータベース
 type TaskDatabase interface {
@@ -8,4 +10,8 @@ type TaskDatabase interface {
 	SearchUnfinished() ([]*entity.Task, error)
 	Update(*entity.Task) error
 	Get(id int) (*entity.Task, error)
+}
+
+type Interactor struct {
+	Database TaskDatabase
 }

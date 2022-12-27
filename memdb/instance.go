@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/74th/vscode-book-r2-golang/domain/entity"
-	"github.com/74th/vscode-book-r2-golang/domain/repository"
+	"github.com/74th/vscode-book-r2-golang/domain/usecase"
 )
 
 var ErrNotFound = errors.New("Not found")
@@ -16,7 +16,7 @@ type Instance struct {
 }
 
 // インスタンスの作成
-func New() repository.TaskDatabase {
+func New() usecase.TaskDatabase {
 	s := new(Instance)
 	s.tasks = make([]entity.Task, 2, 20)
 	s.tasks[0] = entity.Task{
