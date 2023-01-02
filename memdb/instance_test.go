@@ -4,11 +4,13 @@ import (
 	"testing"
 
 	"github.com/74th/vscode-book-r2-golang/domain/entity"
+	"github.com/74th/vscode-book-r2-golang/domain/usecase"
 	"github.com/74th/vscode-book-r2-golang/memdb"
 )
 
 func TestNew(t *testing.T) {
-	rep := memdb.New()
+	var rep usecase.TaskDatabase
+	rep = memdb.NewDB()
 
 	tasks, err := rep.SearchUnfinished()
 	if err != nil {
@@ -21,7 +23,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestListAdd(t *testing.T) {
-	rep := memdb.New()
+	rep := memdb.NewDB()
 
 	newID, err := rep.Add(&entity.Task{
 		Text: "new task",
@@ -67,7 +69,7 @@ func TestListAdd(t *testing.T) {
 }
 
 func TestGetUpdate(t *testing.T) {
-	rep := memdb.New()
+	rep := memdb.NewDB()
 
 	task, err := rep.Get(1)
 	if err != nil {

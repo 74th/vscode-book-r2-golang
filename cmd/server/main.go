@@ -14,7 +14,7 @@ func main() {
 	)
 
 	flag.StringVar(&webroot, "webroot", "./public", "web root path")
-	flag.StringVar(&addr, "addr", "0.0.0.0:8100", "server addr")
+	flag.StringVar(&addr, "addr", "0.0.0.0:8000", "server addr")
 	flag.Parse()
 
 	svr := server.New(addr, webroot)

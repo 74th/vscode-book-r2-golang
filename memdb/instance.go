@@ -16,7 +16,7 @@ type Instance struct {
 }
 
 // インスタンスの作成
-func New() usecase.TaskDatabase {
+func NewDB() usecase.TaskDatabase {
 	s := new(Instance)
 	s.tasks = make([]entity.Task, 2, 20)
 	s.tasks[0] = entity.Task{

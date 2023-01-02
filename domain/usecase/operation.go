@@ -1,10 +1,9 @@
 package usecase
 
 import (
+	"errors"
 	"fmt"
 	"log"
-
-	"errors"
 
 	"github.com/74th/vscode-book-r2-golang/domain/entity"
 )
@@ -15,8 +14,8 @@ var TaskNotFoundError = errors.New("TaskNotFoundError")
 func (it *Interactor) ShowTasks() ([]*entity.Task, error) {
 	tasks, err := it.Database.SearchUnfinished()
 	if err != nil {
-		log.Printf("Database error occurred: %s", err)
-		return nil, fmt.Errorf("Database error occurred: %w", err)
+		log.Printf("DBエラー: %s", err)
+		return nil, fmt.Errorf("DBエラー: %w", err)
 	}
 	return tasks, nil
 }
@@ -25,8 +24,8 @@ func (it *Interactor) ShowTasks() ([]*entity.Task, error) {
 func (it *Interactor) CreateTask(task *entity.Task) (*entity.Task, error) {
 	newID, err := it.Database.Add(task)
 	if err != nil {
-		log.Printf("Database error occurred: %s", err)
-		return nil, fmt.Errorf("Database error occurred: %w", err)
+		log.Printf("DBエラー: %s", err)
+		return nil, fmt.Errorf("DBエラー: %w", err)
 	}
 	task.ID = newID
 	return task, nil
@@ -36,8 +35,8 @@ func (it *Interactor) CreateTask(task *entity.Task) (*entity.Task, error) {
 func (it *Interactor) DoneTask(id int) (*entity.Task, error) {
 	task, err := it.Database.Get(id)
 	if err != nil {
-		log.Printf("Database error occurred: %s", err)
-		return nil, fmt.Errorf("Database error occurred: %w", err)
+		log.Printf("DBエラー: %s", err)
+		return nil, fmt.Errorf("DBエラー: %w", err)
 	}
 	if task == nil {
 		return nil, fmt.Errorf("%w", TaskNotFoundError)
@@ -47,8 +46,8 @@ func (it *Interactor) DoneTask(id int) (*entity.Task, error) {
 
 	err = it.Database.Update(task)
 	if err != nil {
-		log.Printf("Database error occurred: %s", err)
-		return nil, fmt.Errorf("Database error occurred: %w", err)
+		log.Printf("DBエラー: %s", err)
+		return nil, fmt.Errorf("DBエラー: %w", err)
 	}
 	return task, nil
 }

@@ -26,7 +26,7 @@ func New(addr string, webroot string) *Server {
 			Addr: addr,
 		},
 		interactor: usecase.Interactor{
-			Database: memdb.New(),
+			Database: memdb.NewDB(),
 		},
 	}
 
@@ -44,12 +44,13 @@ func (s *Server) Serve() error {
 	return nil
 }
 
+// ルータの設定
 func (s *Server) setRouter(webroot string) {
 	router := gin.Default()
 	api := router.Group("/api")
 	api.GET("/tasks", s.list)
 	api.POST("/tasks", s.create)
-	api.POST("/tasks/:id/done", s.done)
+	api.PATCH("/tasks/:id/done", s.done)
 
 	router.StaticFile("/", filepath.Join(webroot, "index.html"))
 	router.Static("/js", filepath.Join(webroot, "js"))
@@ -62,7 +63,7 @@ func (s *Server) list(c *gin.Context) {
 	tasks, err := s.interactor.ShowTasks()
 	if err != nil {
 		log.Print("error", err)
-		writeErrorResponse(c)
+		c.Status(500)
 		return
 	}
 
@@ -84,7 +85,7 @@ func (s *Server) create(c *gin.Context) {
 	task, err = s.interactor.CreateTask(task)
 	if err != nil {
 		log.Print("error", err)
-		writeErrorResponse(c)
+		c.Status(500)
 		return
 	}
 
@@ -107,8 +108,4 @@ func (s *Server) done(c *gin.Context) {
 	}
 
 	c.JSON(200, task)
-}
-
-func writeErrorResponse(c *gin.Context) {
-	c.Status(500)
 }

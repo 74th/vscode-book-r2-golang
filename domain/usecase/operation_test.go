@@ -10,7 +10,7 @@ import (
 
 func newInteractor() usecase.Interactor {
 	return usecase.Interactor{
-		Database: memdb.New(),
+		Database: memdb.NewDB(),
 	}
 }
 
