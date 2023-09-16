@@ -15,24 +15,6 @@ type Instance struct {
 	tasks []entity.Task
 }
 
-// インスタンスの作成
-func NewDB() usecase.TaskDatabase {
-	s := new(Instance)
-	s.tasks = make([]entity.Task, 2, 20)
-	s.tasks[0] = entity.Task{
-		ID:   1,
-		Text: "task1",
-		Done: false,
-	}
-	s.tasks[1] = entity.Task{
-		ID:   2,
-		Text: "task2",
-		Done: false,
-	}
-
-	return s
-}
-
 // タスクの追加
 func (s *Instance) Add(task *entity.Task) (int, error) {
 	task.ID = len(s.tasks) + 1
@@ -72,4 +54,22 @@ func (s *Instance) Get(id int) (*entity.Task, error) {
 		}
 	}
 	return nil, nil
+}
+
+// インスタンスの作成
+func NewDB() usecase.TaskDatabase {
+	s := new(Instance)
+	s.tasks = make([]entity.Task, 2, 20)
+	s.tasks[0] = entity.Task{
+		ID:   1,
+		Text: "task1",
+		Done: false,
+	}
+	s.tasks[1] = entity.Task{
+		ID:   2,
+		Text: "task2",
+		Done: false,
+	}
+
+	return s
 }

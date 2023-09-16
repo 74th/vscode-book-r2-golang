@@ -14,7 +14,7 @@ func newInteractor() usecase.Interactor {
 	}
 }
 
-func TestTaskWork(t *testing.T) {
+func TestCreateTask(t *testing.T) {
 	it := newInteractor()
 
 	tasks, err := it.ShowTasks()
@@ -22,8 +22,8 @@ func TestTaskWork(t *testing.T) {
 		t.Error("エラーが返らないこと")
 		return
 	}
-	if len(tasks) == 0 {
-		t.Error("初期状態のリポジトリからはからのタスクが引けること")
+	if len(tasks) != 2 {
+		t.Error("初期状態のリポジトリからはからの2つのタスクが引けること")
 		return
 	}
 
@@ -37,5 +37,55 @@ func TestTaskWork(t *testing.T) {
 	}
 	if newTask.ID == 0 {
 		t.Error("タスクIDが割り振られること")
+	}
+
+	tasks, err = it.ShowTasks()
+	if err != nil {
+		t.Error("エラーが返らないこと")
+		return
+	}
+	if len(tasks) != 3 {
+		t.Error("初期状態のリポジトリからはからの3つのタスクが引けること")
+		return
+	}
+}
+
+func TestDoneTask(t *testing.T) {
+	it := newInteractor()
+
+	tasks, err := it.ShowTasks()
+	if err != nil {
+		t.Error("エラーが返らないこと")
+		return
+	}
+	if len(tasks) != 2 {
+		t.Error("初期状態のリポジトリからはからのタスクが引けること")
+		return
+	}
+
+	doneTask := tasks[0].ID
+
+	task, err := it.DoneTask(doneTask)
+	if err != nil {
+		t.Error("エラーが返らないこと")
+		return
+	}
+	if task.Done == false {
+		t.Error("完了状態になったタスクが得られること")
+		return
+	}
+
+	tasks, err = it.ShowTasks()
+	if err != nil {
+		t.Error("エラーが返らないこと")
+		return
+	}
+	if len(tasks) != 1 {
+		t.Error("完了したタスクは返らないこと")
+		return
+	}
+	if tasks[0].ID == doneTask {
+		t.Error("完了したタスクは返らないこと")
+		return
 	}
 }
