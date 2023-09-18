@@ -54,6 +54,7 @@ func (s *Server) setRouter(webroot string) {
 
 	router.StaticFile("/", filepath.Join(webroot, "index.html"))
 	router.Static("/js", filepath.Join(webroot, "js"))
+	router.Static("/css", filepath.Join(webroot, "css"))
 	s.server.Handler = router
 }
 
