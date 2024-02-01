@@ -51,6 +51,7 @@ func (s *Server) setRouter(webroot string) {
 	api.GET("/tasks", s.list)
 	api.POST("/tasks", s.create)
 	api.PATCH("/tasks/:id/done", s.done)
+	api.POST("/tasks/alldone", s.done)
 
 	router.StaticFile("/", filepath.Join(webroot, "index.html"))
 	router.Static("/js", filepath.Join(webroot, "js"))
@@ -109,4 +110,16 @@ func (s *Server) done(c *gin.Context) {
 	}
 
 	c.JSON(200, task)
+}
+
+// POST /tasks/alldone
+// タスク完了
+func (s *Server) allDone(c *gin.Context) {
+	tasks, err := s.interactor.AllDoneTask()
+	if err != nil {
+		c.Status(404)
+		return
+	}
+
+	c.JSON(200, tasks)
 }
