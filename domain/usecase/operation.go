@@ -51,3 +51,24 @@ func (it *Interactor) DoneTask(id int) (*entity.Task, error) {
 	}
 	return task, nil
 }
+
+// 全てのタスクの完了
+func (it *Interactor) AllDoneTask() ([]*entity.Task, error) {
+	tasks, err := it.Database.SearchUnfinished()
+	if err != nil {
+		log.Printf("DBエラー: %s", err)
+		return nil, fmt.Errorf("DBエラー: %w", err)
+	}
+
+	for _, task := range tasks {
+		task.Done = true
+
+		err = it.Database.Update(task)
+		if err != nil {
+			log.Printf("DBエラー: %s", err)
+			return nil, fmt.Errorf("DBエラー: %w", err)
+		}
+	}
+
+	return tasks, nil
+}
